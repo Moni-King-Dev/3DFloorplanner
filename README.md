@@ -1,55 +1,208 @@
-🏠 3DFloorplanner
+# 🏠 3DFloorplanner
 
-3DFloorplanner is an AI-assisted floor plan analyzer.
+**3DFloorplanner** is an AI-assisted floor plan analyzer that converts 2D floor plan images into structured digital blueprints.
 
-In this first phase, you upload a floor plan image, and the backend (powered by FastAPI and Google's Gemini API) converts it into a structured JSON "blueprint" of walls and rooms.
+In this first phase, users upload a **floor plan image**, and the backend (powered by **FastAPI** and **Google Gemini API**) analyzes it to generate a structured **JSON blueprint** containing walls and rooms.
 
-This JSON is intended to be used by a Three.js frontend to render an interactive 3D view where users can move around the generated space.
+This blueprint can later be consumed by a **Three.js frontend** to render an interactive **3D environment** where users can explore the generated space.
 
-✨ Features
-📤 Floor Plan Upload (Frontend)
+---
 
-A simple HTML frontend where users can upload a floor plan image.
+# 🚀 Features
 
-🤖 AI-Powered Analysis (Backend)
+### 📤 Floor Plan Upload
+A lightweight **HTML frontend** allows users to upload a floor plan image to the backend for analysis.
 
-A FastAPI service that:
+### 🤖 AI-Powered Analysis
+The **FastAPI backend**:
 
-Receives the uploaded image
+- Receives the uploaded floor plan image
+- Sends the image to the **Gemini Vision API**
+- Extracts spatial information
+- Returns a clean **JSON blueprint** containing walls and rooms
 
-Sends it to the Gemini API
+### 🧱 Structured Blueprint Output
+The output is a structured **JSON format** designed for easy integration with **3D rendering engines** such as **Three.js**.
 
-Returns a clean JSON blueprint with walls and rooms
+### 🔌 Pluggable 3D Rendering
+The blueprint schema is designed to be consumed by a **Three.js client** to generate a navigable **3D floor plan**.
 
-🧩 Pluggable 3D Rendering
+---
 
-The JSON schema is designed to be consumed by a Three.js client for full 3D navigation.
+# 📁 Project Structure
 
-📁 Project Structure
+```
+3DFloorplanner
+│
+├── frontend
+│   └── index.html        # Simple upload interface
+│
+├── backend
+│   ├── main.py           # FastAPI application (API endpoints)
+│   ├── gemini_scan.py    # Gemini API integration and response parsing
+│   ├── check_models.py   # Utility to list available Gemini models
+│   └── run_scan.py       # CLI helper to scan a floor plan image
+│
+└── requirements.txt      # Backend dependencies
+```
+
+---
+
+# ⚙️ Prerequisites
+
+Make sure you have the following installed:
+
+- 🐍 **Python 3.10+**
+- 🔑 **Google Gemini API Key**
+- Access to the **Generative Language API**
+
+---
+
+# 🛠️ Setup
+
+### 1️⃣ Create a Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+Activate it:
+
+**Windows**
+```bash
+.venv\Scripts\activate
+```
+
+**macOS / Linux**
+```bash
+source .venv/bin/activate
+```
+
+---
+
+### 2️⃣ Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+### 3️⃣ Configure Environment Variables
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Windows PowerShell:
+
+```bash
+copy .env.example .env
+```
+
+Edit the `.env` file and add your API key:
+
+```env
+GOOGLE_API_KEY=your_real_key_here
+```
+
+⚠️ **Important:**  
+`.env` is ignored by Git and should **never be committed**.
+
+---
+
+# ▶️ Running the Backend
+
+Navigate to the **backend directory** and start the server:
+
+```bash
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
+```
+
+The backend will:
+
+- Automatically create an **uploads/** directory
+- Start a local API server
+
+Available endpoints:
+
+| Endpoint | Method | Description |
+|--------|--------|--------|
+| `/` | GET | Health check |
+| `/analyze` | POST | Upload floor plan image and receive JSON blueprint |
+
+---
+
+# 🌐 Running the Frontend
+
+Open the frontend file in your browser:
+
+```
 frontend/index.html
+```
 
-Minimal upload UI for sending a floor plan image to the backend and viewing the JSON response.
+The frontend will:
 
-backend/main.py
+1. Check backend status at  
+   `http://127.0.0.1:8000/`
 
-FastAPI app exposing:
+2. Allow you to **upload a floor plan image**
 
-GET / → Health check
+3. Send a request to  
+   `POST http://127.0.0.1:8000/analyze`
 
-POST /analyze → Accepts an image and returns the analyzed JSON blueprint
+4. Display the **generated JSON blueprint**
 
-backend/gemini_scan.py
+---
 
-Logic for calling the Gemini API and parsing its response into the expected JSON structure.
+# 🧩 Example Blueprint Output
 
-backend/check_models.py
+The backend returns a structured JSON blueprint like this:
 
-Utility to list which Gemini models your API key can use.
+```json
+{
+  "walls": [
+    {
+      "start": { "x": 10, "y": 10 },
+      "end": { "x": 10, "y": 50 },
+      "thickness": 2
+    }
+  ],
+  "rooms": [
+    {
+      "name": "Kitchen",
+      "center": { "x": 20, "y": 20 }
+    }
+  ]
+}
+```
 
-backend/run_scan.py
+A **Three.js frontend** can use this data to:
 
-CLI helper to scan a single image and save the blueprint to blueprint.json.
+- Generate **3D wall meshes**
+- Place **room labels**
+- Enable **interactive navigation**
 
+---
+
+# 🔮 Future Improvements
+
+Planned features for upcoming versions:
+
+- 🧠 Better AI extraction for complex floor plans
+- 🧱 Automatic wall segmentation
+- 🪑 Furniture detection and placement
+- 🌍 Full **Three.js 3D viewer**
+- 🏢 Multi-floor building support
+
+---
+
+# 📜 License
+
+This project is currently **unlicensed**.  
+You can add a license such as **MIT** or **Apache 2.0** in future versions.
 requirements.txt
 
 Python dependencies for the backend.
