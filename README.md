@@ -202,4 +202,3 @@ Planned features for upcoming versions:
 # 📜 License
 
 This project is currently **unlicensed**.  
-You can add a license such as **MIT** or **Apache 2.0** in future versions.
